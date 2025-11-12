@@ -14,6 +14,9 @@ from plotly.subplots import make_subplots
 import scipy.stats as stats
 from scipy.stats import f_oneway, kruskal
 import requests
+import gdown
+import tempfile
+import os
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -53,16 +56,36 @@ st.markdown("""
 def load_data():
     """Load and prepare data for dashboard"""
     try:
-        # Load cleaned datasets
-        # Replace these with your actual Google Drive shareable links
-        BENIN_DRIVE_LINK = 'https://drive.google.com/file/d/17LTv9zREmGz8aT_wPrm2PpCUQAqyv5d1/view?usp=drive_link'
-        SIERRA_LEONE_DRIVE_LINK = 'https://drive.google.com/file/d/1eeFYnQQy-qXq5A65aDttwrAYXbJxZc18/view?usp=drive_link'
-        TOGO_DRIVE_LINK = 'https://drive.google.com/file/d/1RQ7te-7TzpApigIQQyachWXLAQbGERm4/view?usp=drive_link'
+        # Replace with your actual Google Drive file IDs
+        FILE_IDS = {
+            'benin': '17LTv9zREmGz8aT_wPrm2PpCUQAqyv5d1',
+            'sierra_leone': '1eeFYnQQy-qXq5A65aDttwrAYXbJxZc18',
+            'togo': '1RQ7te-7TzpApigIQQyachWXLAQbGERm4'
+        }
         
-        # Load cleaned datasets from Google Drive
-        benin = pd.read_csv(BENIN_DRIVE_LINK)
-        sierra_leone = pd.read_csv(SIERRA_LEONE_DRIVE_LINK)
-        togo = pd.read_csv(TOGO_DRIVE_LINK)
+        dataframes = {}
+        
+        for country, file_id in FILE_IDS.items():
+            # Create temporary file
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.csv') as tmp_file:
+                temp_path = tmp_file.name
+            
+            try:
+                # Download file using gdown
+                url = f'https://drive.google.com/uc?id={file_id}'
+                gdown.download(url, temp_path, quiet=True)
+                
+                # Load CSV
+                dataframes[country] = pd.read_csv(temp_path)
+                
+            finally:
+                # Clean up temporary file
+                if os.path.exists(temp_path):
+                    os.unlink(temp_path)
+        
+        benin = dataframes['benin']
+        sierra_leone = dataframes['sierra_leone']
+        togo = dataframes['togo']
         
         # Add country identifiers
         benin['country'] = 'Benin'
@@ -80,9 +103,9 @@ def load_data():
             
         return all_countries, benin, sierra_leone, togo
         
-    except FileNotFoundError as e:
+    except Exception as e:
         st.error(f"Error loading data files: {e}")
-        st.info("Please ensure the Google Drive links are correct and accessible")
+        st.info("Please ensure the Google Drive file IDs are correct and files are accessible")
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
 def create_summary_metrics(df):
