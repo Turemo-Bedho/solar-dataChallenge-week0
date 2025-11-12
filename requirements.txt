@@ -14,3 +14,4 @@ streamlit
 statsmodels
 requests
 plotly
+gdown
