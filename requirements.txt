@@ -10,3 +10,5 @@ ipykernel
 
 pytest
 pytest-cov
+streamlit
+statsmodels
