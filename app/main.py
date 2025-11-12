@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import scipy.stats as stats
 from scipy.stats import f_oneway, kruskal
+import requests
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -53,9 +54,15 @@ def load_data():
     """Load and prepare data for dashboard"""
     try:
         # Load cleaned datasets
-        benin = pd.read_csv('data/benin_clean.csv')
-        sierra_leone = pd.read_csv('data/sierra_leone_clean.csv')
-        togo = pd.read_csv('data/togo_clean.csv')
+        # Replace these with your actual Google Drive shareable links
+        BENIN_DRIVE_LINK = 'https://drive.google.com/file/d/17LTv9zREmGz8aT_wPrm2PpCUQAqyv5d1/view?usp=sharing'
+        SIERRA_LEONE_DRIVE_LINK = 'https://drive.google.com/file/d/1eeFYnQQy-qXq5A65aDttwrAYXbJxZc18/view?usp=sharing'
+        TOGO_DRIVE_LINK = 'https://drive.google.com/file/d/1RQ7te-7TzpApigIQQyachWXLAQbGERm4/view?usp=sharing'
+        
+        # Load cleaned datasets from Google Drive
+        benin = pd.read_csv(BENIN_DRIVE_LINK)
+        sierra_leone = pd.read_csv(SIERRA_LEONE_DRIVE_LINK)
+        togo = pd.read_csv(TOGO_DRIVE_LINK)
         
         # Add country identifiers
         benin['country'] = 'Benin'
@@ -75,7 +82,7 @@ def load_data():
         
     except FileNotFoundError as e:
         st.error(f"Error loading data files: {e}")
-        st.info("Please ensure all cleaned CSV files are in the data/ folder")
+        st.info("Please ensure the Google Drive links are correct and accessible")
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
 def create_summary_metrics(df):
