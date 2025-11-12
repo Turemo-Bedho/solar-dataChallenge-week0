@@ -55,9 +55,9 @@ def load_data():
     try:
         # Load cleaned datasets
         # Replace these with your actual Google Drive shareable links
-        BENIN_DRIVE_LINK = 'https://drive.google.com/file/d/17LTv9zREmGz8aT_wPrm2PpCUQAqyv5d1/view?usp=sharing'
-        SIERRA_LEONE_DRIVE_LINK = 'https://drive.google.com/file/d/1eeFYnQQy-qXq5A65aDttwrAYXbJxZc18/view?usp=sharing'
-        TOGO_DRIVE_LINK = 'https://drive.google.com/file/d/1RQ7te-7TzpApigIQQyachWXLAQbGERm4/view?usp=sharing'
+        BENIN_DRIVE_LINK = 'https://drive.google.com/file/d/17LTv9zREmGz8aT_wPrm2PpCUQAqyv5d1/view?usp=drive_link'
+        SIERRA_LEONE_DRIVE_LINK = 'https://drive.google.com/file/d/1eeFYnQQy-qXq5A65aDttwrAYXbJxZc18/view?usp=drive_link'
+        TOGO_DRIVE_LINK = 'https://drive.google.com/file/d/1RQ7te-7TzpApigIQQyachWXLAQbGERm4/view?usp=drive_link'
         
         # Load cleaned datasets from Google Drive
         benin = pd.read_csv(BENIN_DRIVE_LINK)
