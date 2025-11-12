@@ -12,3 +12,5 @@ pytest
 pytest-cov
 streamlit
 statsmodels
+
+plotly
